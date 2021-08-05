@@ -1,0 +1,44 @@
+version: "3.9"
+services:
+    trainsim-client:
+        build: trainsim-client
+        volumes:
+            - ./trainsim-client/dist:/usr/share/nginx/html
+        ports:
+            - 8000:80
+        depends_on:
+            - trainsim-api
+    trainsim-api:
+        image: maven:3.8.1-openjdk-11
+        command: mvn exec:java -pl trainsim-api
+        working_dir: /source
+        volumes:
+            - .:/source:ro
+            - .m2:/root/.m2
+        ports:
+            - 8001:80
+            - 1044:1044
+        environment:
+            MAVEN_OPTS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:1044
+            DB_URL: jdbc:postgresql://trainsim-db:5432/trainsim
+            DB_USER: user
+            DB_PASSWORD: password
+            OTP_URL: http://trainsim-planner:80
+        depends_on:
+            - trainsim-planner
+            - trainsim-db
+    trainsim-planner:
+        build: trainsim-planner
+        ports:
+            - 8002:80
+    trainsim-db:
+        image: postgres:13
+        environment:
+            POSTGRES_DB: trainsim
+            POSTGRES_USER: user
+            POSTGRES_PASSWORD: password
+        volumes:
+            - ./trainsim-db/data:/var/lib/postgresql/data
+            - ./trainsim-db/scripts:/docker-entrypoint-initdb.d:ro
+        ports:
+            - 5432:5432

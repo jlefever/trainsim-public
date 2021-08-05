@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "sourceMap": true,
+        "allowJs": false,
+        "strict": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitOverride": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noPropertyAccessFromIndexSignature": true,
+        "noUnusedParameters": true,
+        "forceConsistentCasingInFileNames": true,
+        "module": "es6",
+        "target": "es6",
+        "esModuleInterop": true,
+        "jsx": "react",
+        "moduleResolution": "node",
+        "types": ["node"]
+    },
+    "include": [
+        "src"
+    ]
+}
