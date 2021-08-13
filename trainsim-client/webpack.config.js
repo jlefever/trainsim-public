@@ -5,7 +5,7 @@ module.exports = {
     entry: "./src/index.ts",
     mode: "development",
     devtool: "inline-source-map",
-    plugins: [new HtmlWebpackPlugin({ title: "Demo" })],
+    plugins: [new HtmlWebpackPlugin({ title: "trainsim", favicon: "src/favicon.svg" })],
     module: {
         rules: [
             {
@@ -34,5 +34,5 @@ module.exports = {
         filename: "bundle.js",
         path: path.resolve(__dirname, "dist"),
         clean: true
-    },
+    }
 };

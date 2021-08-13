@@ -1,1 +1,0 @@
-docker run --network="trainsim_default" -p 8080:80 -e "PGADMIN_DEFAULT_EMAIL=me@example.org" -e "PGADMIN_DEFAULT_PASSWORD=password" dpage/pgadmin4

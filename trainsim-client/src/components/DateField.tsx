@@ -1,5 +1,4 @@
-import "bulma/css/bulma.css";
-import React, { useDebugValue } from "react";
+import React from "react";
 
 export interface DateFieldProps {
     name: string;
@@ -18,7 +17,7 @@ export default (props: DateFieldProps) => <div className="field">
             name={props.name}
             min={props.min?.toISOString().substring(0, 10)}
             max={props.max?.toISOString().substring(0, 10)}
-            value={props.disabled ? "" : props.value?.toISOString().substring(0,10)}
+            value={props.disabled ? "" : props.value?.toISOString().substring(0, 10)}
             onChange={e => e.target.valueAsDate && props.onChange(e.target.valueAsDate)}
             disabled={props.disabled}
         />

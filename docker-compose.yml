@@ -13,7 +13,7 @@ services:
         command: mvn exec:java -pl trainsim-api
         working_dir: /source
         volumes:
-            - .:/source:ro
+            - .:/source
             - .m2:/root/.m2
         ports:
             - 8001:80

@@ -1,17 +1,10 @@
 package edu.drexel.trainsim.itinerary.otp;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 
 import com.google.gson.Gson;
-
-import org.eclipse.jetty.client.HttpClient;
-import org.eclipse.jetty.client.api.ContentResponse;
 
 import edu.drexel.trainsim.itinerary.models.Itinerary;
 import edu.drexel.trainsim.itinerary.models.Leg;
@@ -64,9 +57,9 @@ public class ItinerarySearchEngineImpl implements ItinerarySearchEngine {
         var from = legDto.getFrom();
         places.add(new Place(UUID.randomUUID(), from.getStopId(), from.getArriveAt(), from.getDepartAt()));
         
-        // for(var placeDto : legDto.getIntermediateStops()) {
-        //     places.add(new PlaceImpl(placeDto));
-        // }
+        for(var inter : legDto.getIntermediateStops()) {
+            places.add(new Place(UUID.randomUUID(), inter.getStopId(), inter.getArriveAt(), inter.getDepartAt()));
+        }
 
         var to = legDto.getTo();
         places.add(new Place(UUID.randomUUID(), to.getStopId(), to.getArriveAt(), to.getDepartAt()));

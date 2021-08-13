@@ -1,4 +1,3 @@
-import "bulma/css/bulma.css";
 import React from "react";
 
 export interface RangeDropdown {
@@ -19,16 +18,11 @@ export default (props: RangeDropdown) => <div className="field">
     <label className="label" htmlFor={props.name}>{props.name}</label>
     <div className="control has-icons-left">
         <span className="select" style={{ width: "100%" }}>
-            <select
-                name={props.name}
+            <select name={props.name}
                 style={{ width: "100%" }}
-                onChange={e => props.onChange(Number.parseInt(e.target.value))}>
-                {range(props.min, props.max).map(i => <option
-                    key={i}
-                    value={i}
-                    selected={i === props.value}>
-                    {i}
-                </option>)}
+                onChange={e => props.onChange(Number.parseInt(e.target.value))}
+                value={props.value}>
+                {range(props.min, props.max).map(i => <option key={i} value={i}>{i}</option>)}
             </select>
             <span className="icon is-left">
                 <i className={props.icon}></i>

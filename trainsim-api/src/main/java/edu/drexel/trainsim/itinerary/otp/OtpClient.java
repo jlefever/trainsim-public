@@ -20,7 +20,7 @@ public class OtpClient {
     public String plan(Date date, String sourceStopId, String targetStopId) {
         var formatter = new SimpleDateFormat("yyyy-MM-dd");
         var url = "plan?&mode=TRANSIT&time=12:00AM&searchWindow=86400" + "&fromPlace=" + sourceStopId + "&toPlace="
-                + targetStopId + "&date=" + formatter.format(date);
+                + targetStopId + "&date=" + formatter.format(date) + "&showIntermediateStops=true";
 
         try {
             return this.http.GET(urlFor(url)).getContentAsString();

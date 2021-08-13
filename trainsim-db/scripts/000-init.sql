@@ -1,5 +1,10 @@
 CREATE SCHEMA otp;
 
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL
+);
+
 CREATE TABLE otp.stops (
     id SERIAL PRIMARY KEY,
     otp_id VARCHAR(64) UNIQUE NOT NULL,

@@ -1,6 +1,4 @@
 import React from "react";
-
-import "bulma/css/bulma.css";
 import train from "./train.svg";
 
 export default () => <>

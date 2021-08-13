@@ -28,6 +28,10 @@ public class LegDto {
     }
 
     public PlaceDto[] getIntermediateStops() {
+        if (this.intermediateStops == null) {
+            return new PlaceDto[0];
+        }
+
         return this.intermediateStops;
     }
 

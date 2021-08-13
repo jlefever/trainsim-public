@@ -18,6 +18,7 @@ public class GetAllStopsImpl implements GetAllStops {
 
     public List<Stop> call() {
         var sql = "SELECT id, otp_id AS otpId, name FROM otp.stops WHERE otp_id LIKE '2:%' ORDER BY name";
+        
         try (var con = this.db.open()) {
             return con.createQuery(sql).executeAndFetch(Stop.class);
         }
