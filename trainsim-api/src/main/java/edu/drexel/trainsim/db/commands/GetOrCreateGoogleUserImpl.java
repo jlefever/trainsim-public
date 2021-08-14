@@ -1,8 +1,12 @@
 package edu.drexel.trainsim.db.commands;
 
+import java.util.List;
+
 import com.google.inject.Inject;
 
 import edu.drexel.trainsim.db.models.User;
+
+import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
 public class GetOrCreateGoogleUserImpl implements GetOrCreateGoogleUser {
@@ -17,8 +21,8 @@ public class GetOrCreateGoogleUserImpl implements GetOrCreateGoogleUser {
     public User call(String email) {
         String sql = "SELECT id, email FROM users WHERE email = :email";
 
-        try (var con = this.db.open()) {
-            var res = con.createQuery(sql).addParameter("email", email).executeAndFetch(User.class);
+        try (Connection con = this.db.open()) {
+            List<User> res = con.createQuery(sql).addParameter("email", email).executeAndFetch(User.class);
 
             // There is a race condition here if we have more than one servers talking to the db.
             if (res.isEmpty()) {

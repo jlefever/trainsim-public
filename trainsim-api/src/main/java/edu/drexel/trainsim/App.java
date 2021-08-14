@@ -1,7 +1,9 @@
 package edu.drexel.trainsim;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.zaxxer.hikari.HikariConfig;
 
 import org.sql2o.Sql2o;
@@ -19,31 +21,31 @@ import io.javalin.plugin.json.JavalinJson;
 public class App {
     public static void main(String[] args) throws Exception {
         // Wait until OTP is fully initilized
-        // TOOD: There are certainly better ways to do this.
+        // TODO: There are certainly better ways to do this.
         Thread.sleep(2000);
 
         // Database
-        var hikari = new HikariConfig();
+        HikariConfig hikari = new HikariConfig();
         hikari.setJdbcUrl(getEnv("DB_URL"));
         hikari.setUsername(getEnv("DB_USER"));
         hikari.setPassword(getEnv("DB_PASSWORD"));
 
         // Dependency injection
-        var injector = Guice.createInjector(
+        Injector injector = Guice.createInjector(
             new DatabaseModule(hikari),
             new ItineraryModule(getEnv("OTP_URL"))
         );
 
         // Prepopulate routes and stops
-        var db = injector.getInstance(Sql2o.class);
-        var otpClient = injector.getInstance(OtpClient.class);
+        Sql2o db = injector.getInstance(Sql2o.class);
+        OtpClient otpClient = injector.getInstance(OtpClient.class);
         new Prepopulater(db, otpClient).prepopulate();
 
         // Web server
-        var gson = new GsonBuilder().create();
+        Gson gson = new GsonBuilder().create();
         JavalinJson.setFromJsonMapper(gson::fromJson);
         JavalinJson.setToJsonMapper(gson::toJson);
-        var app = Javalin.create(config -> {
+        Javalin app = Javalin.create(config -> {
             config.enableDevLogging();
             config.enableCorsForAllOrigins();
         });
@@ -58,7 +60,7 @@ public class App {
     }
 
     private static String getEnv(String name) {
-        var value = System.getenv(name);
+        String value = System.getenv(name);
 
         if (value == null) {
             final String message = "Environment variable `%s` is required.";

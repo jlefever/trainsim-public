@@ -20,7 +20,7 @@ public class ItineraryController implements Controller {
     }
 
     private void search(Context ctx) throws Exception {
-        var search = ctx.bodyAsClass(ItinerarySearch.class);
+        ItinerarySearch search = ctx.bodyAsClass(ItinerarySearch.class);
         ctx.json(this.engine.search(search));
     }
 }

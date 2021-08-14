@@ -3,6 +3,8 @@ package edu.drexel.trainsim.itinerary.db;
 import java.util.List;
 import java.util.UUID;
 
+import org.sql2o.Connection;
+import org.sql2o.Query;
 import org.sql2o.Sql2o;
 
 import edu.drexel.trainsim.itinerary.models.Place;
@@ -16,15 +18,15 @@ public class StorePlacesImpl implements StorePlaces {
 
     @Override
     public void call(UUID legId, List<Place> places) {
-        var sql = "INSERT INTO otp.places (id, leg_id, stop_id, sort, arrive_at, depart_at) "
+        String sql = "INSERT INTO otp.places (id, leg_id, stop_id, sort, arrive_at, depart_at) "
                 + "VALUES (:id, :leg_id, (SELECT id FROM otp.stops WHERE otp_id = :stop_id), "
                 + ":sort, :arrive_at, :depart_at);";
 
-        try (var con = this.db.open()) {
-            var query = con.createQuery(sql);
+        try (Connection con = this.db.open()) {
+            Query query = con.createQuery(sql);
 
-            var sort = 0;
-            for (var place : places) {
+            int sort = 0;
+            for (Place place : places) {
                 query.addParameter("id", place.getId())
                     .addParameter("leg_id", legId)
                     .addParameter("stop_id", place.getStopId())

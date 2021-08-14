@@ -6,7 +6,7 @@ Please do not hesistate to contact the TAs (especially Jason Lefever or Hongzhou
 
 ## Getting Started
 
-The following tools are required to build and run this project: Docker, Docker Compose, Maven, Java 11, and npm.
+The following tools are required to build and run this project: Docker, Docker Compose, Maven, Java 8, and npm.
 
 From the root of the project run:
 

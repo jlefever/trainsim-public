@@ -11,6 +11,7 @@ import edu.drexel.trainsim.itinerary.models.Leg;
 import edu.drexel.trainsim.itinerary.models.Place;
 import edu.drexel.trainsim.itinerary.otp.dtos.ItineraryDto;
 import edu.drexel.trainsim.itinerary.otp.dtos.LegDto;
+import edu.drexel.trainsim.itinerary.otp.dtos.PlaceDto;
 import edu.drexel.trainsim.itinerary.otp.dtos.PlanResponseDto;
 import edu.drexel.trainsim.itinerary.search.ItinerarySearch;
 import edu.drexel.trainsim.itinerary.search.ItinerarySearchEngine;
@@ -27,15 +28,15 @@ public class ItinerarySearchEngineImpl implements ItinerarySearchEngine {
     @Override
     public List<Itinerary> search(ItinerarySearch search) {
         // 1. Make the request to OTP
-        var json = this.client.plan(search.getDepartDate(), search.getSource(), search.getTarget());
+        String json = this.client.plan(search.getDepartDate(), search.getSource(), search.getTarget());
 
         // 2. Map the response JSON to our DTOs.
-        var dto = this.mapper.fromJson(json, PlanResponseDto.class);
+        PlanResponseDto dto = this.mapper.fromJson(json, PlanResponseDto.class);
 
         // 3. Map the DTOs to our model objects.
-        var itineraries = new ArrayList<Itinerary>();
+        List<Itinerary> itineraries = new ArrayList<Itinerary>();
 
-        for (var itineraryDto : dto.getPlan().getItineraries()) {
+        for (ItineraryDto itineraryDto : dto.getPlan().getItineraries()) {
             itineraries.add(new Itinerary(UUID.randomUUID(), createLegs(itineraryDto)));
         }
 
@@ -43,9 +44,9 @@ public class ItinerarySearchEngineImpl implements ItinerarySearchEngine {
     }
 
     private static List<Leg> createLegs(ItineraryDto dto) {
-        var legs = new ArrayList<Leg>();
+        List<Leg> legs = new ArrayList<Leg>();
         
-        for(var legDto : dto.getLegs()) {
+        for(LegDto legDto : dto.getLegs()) {
             legs.add(new Leg(UUID.randomUUID(), legDto.getRouteId(), createPlaces(legDto), legDto.getDistance()));
         }
 
@@ -53,15 +54,15 @@ public class ItinerarySearchEngineImpl implements ItinerarySearchEngine {
     }
 
     private static List<Place> createPlaces(LegDto legDto) {
-        var places = new ArrayList<Place>();
-        var from = legDto.getFrom();
+        List<Place> places = new ArrayList<Place>();
+        PlaceDto from = legDto.getFrom();
         places.add(new Place(UUID.randomUUID(), from.getStopId(), from.getArriveAt(), from.getDepartAt()));
         
-        for(var inter : legDto.getIntermediateStops()) {
+        for(PlaceDto inter : legDto.getIntermediateStops()) {
             places.add(new Place(UUID.randomUUID(), inter.getStopId(), inter.getArriveAt(), inter.getDepartAt()));
         }
 
-        var to = legDto.getTo();
+        PlaceDto to = legDto.getTo();
         places.add(new Place(UUID.randomUUID(), to.getStopId(), to.getArriveAt(), to.getDepartAt()));
         return places;
     }

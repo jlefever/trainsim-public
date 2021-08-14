@@ -1,5 +1,6 @@
 package edu.drexel.trainsim.itinerary.otp;
 
+import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
 public class Prepopulater {
@@ -28,9 +29,9 @@ public class Prepopulater {
     }
 
     private void loadStops() {
-        var json = this.client.getAllStops();
+        String json = this.client.getAllStops();
 
-        try (var con = this.db.open()) {
+        try (Connection con = this.db.open()) {
             con.createQuery("CALL otp.load_stops(CAST(:stops AS JSON))")
                 .addParameter("stops", json)
                 .executeUpdate();
@@ -38,9 +39,9 @@ public class Prepopulater {
     }
 
     private void loadRoutes() {
-        var json = this.client.getAllRoutes();
+        String json = this.client.getAllRoutes();
         
-        try (var con = this.db.open()) {
+        try (Connection con = this.db.open()) {
             con.createQuery("CALL otp.load_routes(CAST(:routes AS JSON))")
                 .addParameter("routes", json)
                 .executeUpdate();
@@ -48,14 +49,14 @@ public class Prepopulater {
     }
 
     private boolean hasStops() {
-        try (var con = this.db.open()) {
+        try (Connection con = this.db.open()) {
             return con.createQuery("SELECT EXISTS(SELECT 1 FROM otp.stops)")
                 .executeAndFetch(Boolean.class).get(0);
         }
     }
 
     private boolean hasRoutes() {
-        try (var con = this.db.open()) {
+        try (Connection con = this.db.open()) {
             return con.createQuery("SELECT EXISTS(SELECT 1 FROM otp.routes)")
                 .executeAndFetch(Boolean.class).get(0);
         }
