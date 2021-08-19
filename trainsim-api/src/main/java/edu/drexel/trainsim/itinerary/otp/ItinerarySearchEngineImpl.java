@@ -1,6 +1,7 @@
 package edu.drexel.trainsim.itinerary.otp;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,6 +10,7 @@ import com.google.gson.Gson;
 import edu.drexel.trainsim.itinerary.models.Itinerary;
 import edu.drexel.trainsim.itinerary.models.Leg;
 import edu.drexel.trainsim.itinerary.models.Place;
+import edu.drexel.trainsim.itinerary.models.SearchResult;
 import edu.drexel.trainsim.itinerary.otp.dtos.ItineraryDto;
 import edu.drexel.trainsim.itinerary.otp.dtos.LegDto;
 import edu.drexel.trainsim.itinerary.otp.dtos.PlanResponseDto;
@@ -25,9 +27,21 @@ public class ItinerarySearchEngineImpl implements ItinerarySearchEngine {
     }
 
     @Override
-    public List<Itinerary> search(ItinerarySearch search) {
+    public SearchResult search(ItinerarySearch search) {
+        var outboundItineraries = getItineraries(search.getDepartDate(), search.getSource(), search.getTarget());
+
+        List<Itinerary> returnItineraries;
+        if(search.getReturnDate() != null)
+            returnItineraries = getItineraries(search.getReturnDate(), search.getTarget(), search.getSource());
+        else
+            returnItineraries = new ArrayList<>();
+        
+        return new SearchResult(outboundItineraries, returnItineraries);
+    }
+
+    private List<Itinerary> getItineraries(Date date, String source, String target) {
         // 1. Make the request to OTP
-        var json = this.client.plan(search.getDepartDate(), search.getSource(), search.getTarget());
+        var json = this.client.plan(date, source, target);
 
         // 2. Map the response JSON to our DTOs.
         var dto = this.mapper.fromJson(json, PlanResponseDto.class);

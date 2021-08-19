@@ -60,7 +60,7 @@ export default class SearchForm extends React.Component<SearchFormProps, SearchF
         const { setPage } = this.props;
 
         this.itineraryProvider.fetchItineraries(search, res =>
-            setPage(<SearchResultPage search={search} itineraries={res} setPage={setPage} />
+            setPage(<SearchResultPage search={search} searchResult={res} setPage={setPage} />
         ));
     }
 

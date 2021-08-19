@@ -7,6 +7,7 @@ import NavButtonBar from "./NavButtonBar";
 import ProgressTracker from "./PurchaseTracker";
 import SearchHeader from "./SearchHeader";
 import TravelerInfoPage from "./TravelerInfoPage";
+import SearchResult from "../models/SearchResult";
 
 export interface CheckoutPageProps {
     search: ItinerarySearch;
@@ -25,7 +26,7 @@ export default class CheckoutPage extends Component<CheckoutPageProps, CheckoutP
         const { search, itinerary, setPage } = this.props;
 
         return <div>
-            <SearchHeader search={search} />
+            <SearchHeader search={search} searchResult={null} isOutbound={true}/>
             <ProgressTracker currentStage={PurchaseStage.Checkout} />
 
             <hr />
