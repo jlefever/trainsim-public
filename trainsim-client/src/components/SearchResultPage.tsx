@@ -31,14 +31,15 @@ export default class SearchResultPage extends Component<SearchResultPageProps, S
             const { search, searchResult, setPage } = this.props;
             setPage(<TravelerInfoPage search={search} itinerary={itin} setPage={setPage} />)
         }
+        window.scrollTo(0, 0);
     }
 
     override render() {
         const { search, searchResult, setPage } = this.props;
 
         let message = this.state.isOutbound ? 
-            "Please select one of the following itineraries." : 
-            "Please select one of the following itineraties for your return trip.";
+            <p>Please select one of the following itineraries.</p> : 
+            <p>Please select one of the following itineraties for your <b>return</b> trip.</p>;
  
 
         let itineraries;
@@ -57,7 +58,7 @@ export default class SearchResultPage extends Component<SearchResultPageProps, S
         )
 
         return <div>
-            <SearchHeader search={search} searchResult={searchResult} />
+            <SearchHeader search={search} searchResult={searchResult} isOutbound={this.state.isOutbound} />
             <ProgressTracker currentStage={PurchaseStage.SelectItinerary} />
 
             <hr />

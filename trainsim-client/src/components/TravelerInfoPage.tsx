@@ -7,6 +7,7 @@ import NavButtonBar from "./NavButtonBar";
 import ProgressTracker from "./PurchaseTracker";
 import SearchHeader from "./SearchHeader";
 import TravelerForm from "./TravelerForm";
+import SearchResult from "../models/SearchResult";
 
 export interface TravelerInfoPageProps {
     search: ItinerarySearch;
@@ -34,7 +35,7 @@ export default class TravelerInfoPage extends Component<TravelerInfoPageProps, T
         }
 
         return <div>
-            <SearchHeader search={search} searchResult={null}/>
+            <SearchHeader search={search} searchResult={null} isOutbound={true}/>
             <ProgressTracker currentStage={PurchaseStage.EnterTravelerInfo} />
 
             <hr />

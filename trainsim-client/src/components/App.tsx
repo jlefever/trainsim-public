@@ -15,6 +15,7 @@ export default class App extends Component<{}, AppState> {
 
     setPage(page: ReactElement) {
         this.setState({ currentPage: page });
+        window.scrollTo(0, 0);
     }
 
     override render() {
