@@ -34,7 +34,7 @@ export default class TravelerInfoPage extends Component<TravelerInfoPageProps, T
         }
 
         return <div>
-            <SearchHeader search={search} />
+            <SearchHeader search={search} searchResult={null}/>
             <ProgressTracker currentStage={PurchaseStage.EnterTravelerInfo} />
 
             <hr />

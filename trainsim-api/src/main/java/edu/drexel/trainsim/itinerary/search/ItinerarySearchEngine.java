@@ -1,9 +1,7 @@
 package edu.drexel.trainsim.itinerary.search;
 
-import java.util.Collection;
-
-import edu.drexel.trainsim.itinerary.models.Itinerary;
+import edu.drexel.trainsim.itinerary.models.SearchResult;
 
 public interface ItinerarySearchEngine {
-    Collection<? extends Itinerary> search(ItinerarySearch search);
+    SearchResult search(ItinerarySearch search);
 }

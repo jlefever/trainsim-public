@@ -1,5 +1,6 @@
 import React, { Component, ReactElement } from "react";
 import Itinerary from "../models/Itinerary";
+import SearchResult from "../models/SearchResult";
 import ItinerarySearch from "../models/ItinerarySearch";
 import PurchaseStage from "../models/PurchaseStage";
 import ProgressTracker from "./PurchaseTracker";
@@ -9,24 +10,54 @@ import TravelerInfoPage from "./TravelerInfoPage";
 
 interface SearchResultPageProps {
     search: ItinerarySearch;
-    itineraries: readonly Itinerary[];
+    searchResult: SearchResult;
     setPage: (page: ReactElement) => void;
 }
 
-export default class SearchResultPage extends Component<SearchResultPageProps> {
+interface SearchResultPageState {
+    isOutbound: boolean;
+}
+
+export default class SearchResultPage extends Component<SearchResultPageProps, SearchResultPageState> {
     constructor(props: SearchResultPageProps) {
         super(props);
+        this.state = {isOutbound: true};
+    }
+
+    itinerarySelected(itin: Itinerary) {
+        if(this.state.isOutbound && this.props.search.returnDate && this.props.searchResult.returnItineraries.length > 0) {
+            this.setState({isOutbound: false});
+        } else {
+            const { search, searchResult, setPage } = this.props;
+            setPage(<TravelerInfoPage search={search} itinerary={itin} setPage={setPage} />)
+        }
     }
 
     override render() {
-        const { search, itineraries, setPage } = this.props;
+        const { search, searchResult, setPage } = this.props;
 
-        const message = itineraries.length !== 0 ?
-            "Please select one of the following itineraries." :
-            "No results found.";
+        let message = this.state.isOutbound ? 
+            "Please select one of the following itineraries." : 
+            "Please select one of the following itineraties for your return trip.";
+ 
+
+        let itineraries;
+        if(this.state.isOutbound) {
+            itineraries = searchResult.outboundItineraries;
+        } else {
+            itineraries = searchResult.returnItineraries;
+        }
+
+        const items = itineraries.map(i =>
+            <SearchResultItem
+                key={i.id}
+                itinerary={i}
+                select={() => this.itinerarySelected(i)}
+            />
+        )
 
         return <div>
-            <SearchHeader search={search} />
+            <SearchHeader search={search} searchResult={searchResult} />
             <ProgressTracker currentStage={PurchaseStage.SelectItinerary} />
 
             <hr />
@@ -35,13 +66,7 @@ export default class SearchResultPage extends Component<SearchResultPageProps> {
                 <h2 className="title is-3">Itineraries</h2>
                 <p>{message}</p>
 
-                {itineraries.map(i =>
-                    <SearchResultItem
-                        key={i.id}
-                        itinerary={i}
-                        select={() => setPage(<TravelerInfoPage search={search} itinerary={i} setPage={setPage} />)}
-                    />
-                )}
+                {items}
             </div>
         </div>
     }

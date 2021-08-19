@@ -2,15 +2,20 @@ import Itinerary from "../models/Itinerary";
 import ItinerarySearch from "../models/ItinerarySearch";
 import Leg from "../models/Leg";
 import Place from "../models/Place";
+import SearchResult from "../models/SearchResult";
 
 export default class ItineraryProvider {
-    fetchItineraries(search: ItinerarySearch, callback: (itineraries: readonly Itinerary[]) => void) {
+    fetchItineraries(search: ItinerarySearch, callback: (itineraries: SearchResult) => void) {
         fetch("/api/query", { method: "POST", body: search.toJson() })
             .then(res => res.json())
-            .then(res => res as ItineraryDto[])
-            .then(res => res.map(fromItineraryDto))
+            .then(res => res as SearchResultDto)
+            .then(res => fromSearchResultDto(res))
             .then(res => callback(res));
     }
+}
+
+function fromSearchResultDto(dto: SearchResultDto) {
+    return new SearchResult(dto.outboundItineraries.map(i => fromItineraryDto(i)), dto.returnItineraries.map(i => fromItineraryDto(i)));
 }
 
 function fromItineraryDto(dto: ItineraryDto) {
@@ -30,6 +35,11 @@ function fromLegDto(dto: LegDto) {
 
 function fromPlaceDto(dto: PlaceDto) {
     return new Place(dto.id, dto.stopId, new Date(dto.arriveAt), new Date(dto.departAt));
+}
+
+interface SearchResultDto {
+    outboundItineraries: ItineraryDto[];
+    returnItineraries: ItineraryDto[];
 }
 
 interface ItineraryDto
