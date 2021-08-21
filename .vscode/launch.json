@@ -6,12 +6,12 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Attach to 'trainsim-api'",
+            "name": "Attach to 'trainsim-itinerary-microservice'",
             "request": "attach",
             "hostName": "localhost",
             "port": "1044",
             "sourcePaths": [
-                "trainsim-api/"
+                "trainsim-itinerary-microservice/"
             ]
         },
         {

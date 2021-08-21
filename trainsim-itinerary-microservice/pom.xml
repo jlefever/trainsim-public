@@ -10,7 +10,7 @@
   </parent>
 
   <groupId>edu.drexel.trainsim</groupId>
-  <artifactId>trainsim-api</artifactId>
+  <artifactId>trainsim-itinerary-microservice</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <properties>
