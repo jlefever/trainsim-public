@@ -29,13 +29,13 @@ This is a PostgreSQL database. The database contents are stored in the `data/` d
 
 This is an [OpenTripPlanner](https://www.opentripplanner.org/) server with SEPTA data. The `trainsim-planner/Dockerfile` does everything. You should not have to make any changes to this.
 
-### trainsim-api
+### trainsim-<microservice name>
 
-This is a Java web server. It uses trainsim-db and trainsim-planner to answer requests from the frontend. It is where most of the use cases will be implemented. We use a few small libraries to implement the server. Check `trainsim-api/pom.xml` for details.
+This is a Java web server. It uses trainsim-db and trainsim-planner to answer requests from the frontend. It is where most of the use cases will be implemented. We use a few small libraries to implement the server. Check `trainsim-<microservice name>/pom.xml` for details.
 
 ### trainsim-client
 
-This is the user interface of our application. It is written in [TypeScript](https://www.typescriptlang.org/) and uses [React](https://reactjs.org/) to render our views. We use [npm](https://www.npmjs.com/) to manage our dependencies and [webpack](https://webpack.js.org/) to build our project. Building the project (with `npm run build`) will result in a bundle of `.js` and `.html` being output to the `dist/` directory. We use [nginx](https://www.nginx.com/) to serve this `dist/` directory to the browser. The `nginx.conf` also configures nginx to forward any urls which start with `/api/` to trainsim-api. This allows the client to make requests to the api without using a different port.
+This is the user interface of our application. It is written in [TypeScript](https://www.typescriptlang.org/) and uses [React](https://reactjs.org/) to render our views. We use [npm](https://www.npmjs.com/) to manage our dependencies and [webpack](https://webpack.js.org/) to build our project. Building the project (with `npm run build`) will result in a bundle of `.js` and `.html` being output to the `dist/` directory. We use [nginx](https://www.nginx.com/) to serve this `dist/` directory to the browser. The `nginx.conf` also configures nginx to forward any urls which start with `/api/` to trainsim-itinerary. This allows the client to make requests to the api without using a different port.
 
 If you are brand new to frontend development, here are some great resources for getting started:
 - [A re-introduction to JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript) - A great refresher or introduction to JavaScript
@@ -48,7 +48,7 @@ There are also great resources out there on npm, webpack, and nginx but you shou
 
 You can start the project at any time with `docker-compose up`.
 
-To apply changes you have made to the backend, you could stop all services (with Ctrl + C) and start docker-compose again, but it may be easier to open a new shell and restart just the `trainsim-api` service by running `docker-compose restart trainsim-api`.
+To apply changes you have made to the backend, you could stop all services (with Ctrl + C) and start docker-compose again, but it may be easier to open a new shell and restart just the `trainsim-*` service by running `docker-compose restart trainsim-*`.
 
 If you make any changes to the frontend, simply run `npm run build` to apply your changes. As an alternative to `npm run build`, you can use `npm run watch` (in a different shell from `docker-compose up`.) This will cause webpack to rebuild the frontend every time a file is saved. This can make for a more fluid development experience.
 
@@ -56,7 +56,7 @@ If you make any changes to the frontend, simply run `npm run build` to apply you
 
 These directions are for Visual Studio Code but other IDEs should be similar.
 
-#### Debugging trainsim-api
+#### Debugging trainsim
 
 Because the application code is running in a docker container, it is slightly more invovled to debug the application. Modify the `MAVEN_OTPS` environment variable inside the `docker-compose.yml` file. You should see:
 
@@ -69,17 +69,17 @@ Change the `suspend=n` to `suspend=y`. This tells the Java runtime to pause unti
 ```
 {
     "type": "java",
-    "name": "Attach to 'trainsim-api'",
+    "name": "Attach to 'trainsim-<microservice name>'",
     "request": "attach",
     "hostName": "localhost",
     "port": "1044",
     "sourcePaths": [
-        "trainsim-api/"
+        "trainsim-<microservice name>/"
     ]
 }
 ```
 
-Now set any breakpoints you would like and start the application with `docker-compose up` and attach the debugger by going to the "Run and Debug" tab of VS Code and running the "Attach to 'trainsim-api'" task.
+Now set any breakpoints you would like and start the application with `docker-compose up` and attach the debugger by going to the "Run and Debug" tab of VS Code and running the "Attach to 'trainsim-<microservice name>'" task.
 
 #### Debugging trainsim-client
 

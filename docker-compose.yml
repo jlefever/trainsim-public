@@ -7,10 +7,10 @@ services:
         ports:
             - 8000:80
         depends_on:
-            - trainsim-api
-    trainsim-api:
+            - trainsim-itinerary
+    trainsim-itinerary:
         image: maven:3.8.1-openjdk-11
-        command: mvn exec:java -pl trainsim-api
+        command: mvn exec:java -pl trainsim-itinerary
         working_dir: /source
         volumes:
             - .:/source
