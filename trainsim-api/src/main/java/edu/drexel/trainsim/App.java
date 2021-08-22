@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder;
 import com.google.inject.Guice;
 import com.zaxxer.hikari.HikariConfig;
 
+import edu.drexel.trainsim.user.TravellerTransactionController;
 import org.sql2o.Sql2o;
 
 import edu.drexel.trainsim.db.DatabaseModule;
@@ -52,6 +53,7 @@ public class App {
         injector.getInstance(ItineraryController.class).bindRoutes(app);
         injector.getInstance(StopController.class).bindRoutes(app);
         injector.getInstance(UserLoginController.class).bindRoutes(app);
+        injector.getInstance(TravellerTransactionController.class).bindRoutes(app);
 
         // Start the web server
         app.start(80);

@@ -2,7 +2,11 @@ CREATE SCHEMA otp;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    email TEXT UNIQUE NOT NULL
+    email TEXT UNIQUE NOT NULL,
+    first_name TEXT,
+    last_name TEXT,
+    email_send_transaction_detail TEXT,
+    phone TEXT
 );
 
 CREATE TABLE otp.stops (
